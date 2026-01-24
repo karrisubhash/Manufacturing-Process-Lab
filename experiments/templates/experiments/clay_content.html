@@ -1,0 +1,59 @@
+{% extends "experiments/base.html" %}
+{% block content %}
+<h3>{{ experiment.title }}</h3>
+
+<div class="mb-3">
+    <strong>Aim:</strong>
+    <p>{{ experiment.aim }}</p>
+</div>
+
+<div class="mb-3">
+    <strong>Procedure:</strong>
+    <ol>
+        {% for step in experiment.procedure %}
+            <li>{{ step }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Initial Weight (W1)</label>
+        <input type="number" step="0.01" name="W1" class="form-control" value="{{ W1 }}">
+    </div>
+    <div class="mb-3">
+        <label>Final Weight (W2)</label>
+        <input type="number" step="0.01" name="W2" class="form-control" value="{{ W2 }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Calculate Clay Content</button>
+</form>
+
+{% if result %}
+<div class="alert alert-success mt-4">
+    <strong>Clay Content:</strong> {{ result }}
+</div>
+<div class="bg-light p-3 rounded">
+    {{ steps|safe }}
+</div>
+{% endif %}
+
+<hr class="my-4">
+<h5>Send Result to Student Email</h5>
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="hidden" name="from_result" value="true">
+    <input type="hidden" name="W1" value="{{ W1 }}">
+    <input type="hidden" name="W2" value="{{ W2 }}">
+
+    <div class="mb-3 mt-3">
+        <label for="email" class="form-label">Student Email</label>
+        <input type="email" name="email" id="email" class="form-control"
+               placeholder="student@example.com"
+               value="{{ email|default:'' }}" required>
+    </div>
+    <button type="submit" class="btn btn-success">📧 Send Result to Email</button>
+</form>
+
+<a href="{% url 'experiment_list' %}" class="btn btn-secondary mt-3">← Back to List</a>
+{% endblock %}

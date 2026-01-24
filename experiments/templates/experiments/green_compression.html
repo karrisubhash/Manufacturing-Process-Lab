@@ -1,0 +1,78 @@
+{% extends "experiments/base.html" %}
+{%load custom_filters%}
+
+{% block content %}
+<h3>{{ experiment.title }}</h3>
+
+<div class="mb-3">
+    <strong>Aim:</strong>
+    <p>{{ experiment.aim }}</p>
+</div>
+
+<div class="mb-3">
+    <strong>Procedure:</strong>
+    <ol>
+        {% for step in experiment.procedure %}
+            <li>{{ step }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Trial</th>
+                <th>Green Compression</th>
+                <th>Shear Strength</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in gc_trials %}
+            <tr>
+                <td>{{ t.trial }}</td>
+                <td><input type="number" step="0.01" name="GC{{ t.trial }}" value="{{ t.gc }}" class="form-control"></td>
+                <td><input type="number" step="0.01" name="Shear{{ t.trial }}" value="{{ t.shear }}" class="form-control"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Calculate</button>
+</form>
+
+{% if result_gc or result_shear %}
+    {% if result_gc %}
+    <div class="alert alert-success mt-4">
+        <strong>Average Green Compression:</strong> {{ result_gc }}
+    </div>
+    {% endif %}
+    {% if result_shear %}
+    <div class="alert alert-success mt-2">
+        <strong>Average Shear Strength:</strong> {{ result_shear }}
+    </div>
+    {% endif %}
+    <div class="bg-light p-3 rounded mt-3">
+        {{ steps|safe }}
+    </div>
+{% endif %}
+
+<hr class="my-4">
+<h5>Send Result to Student Email</h5>
+<form method="POST">
+    {% csrf_token %}
+    {% for t in gc_trials %}
+        <input type="hidden" name="GC{{ t.trial }}" value="{{ t.gc }}">
+        <input type="hidden" name="Shear{{ t.trial }}" value="{{ t.shear }}">
+    {% endfor %}
+    <input type="hidden" name="from_result" value="true">
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Student Email</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="student@example.com" value="{{ email|default:'' }}" required>
+    </div>
+    <button type="submit" class="btn btn-success">📧 Send Result to Email</button>
+</form>
+
+<a href="{% url 'experiment_list' %}" class="btn btn-secondary mt-3">← Back to List</a>
+{% endblock %}

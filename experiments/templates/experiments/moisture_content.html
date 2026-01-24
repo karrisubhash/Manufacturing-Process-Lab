@@ -1,0 +1,87 @@
+{% extends "experiments/base.html" %}
+{% block content %}
+<h3>{{ experiment.title }}</h3>
+
+<div class="mb-3">
+    <strong>Aim:</strong>
+    <p>{{ experiment.aim }}</p>
+</div>
+
+<div class="mb-3">
+    <strong>Procedure:</strong>
+    <ol>
+        {% for step in experiment.procedure %}
+            <li>{{ step }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Sample</th>
+                <th>Wet Weight (W1)</th>
+                <th>Dry Weight (W2)</th>
+                <th>Moisture Content (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for sample in moisture_results %}
+    <tr>
+        <td>Sample {{ sample.sample }}</td>
+        <td>
+            <input type="number" step="0.01" name="W1_{{ sample.sample }}" 
+                   value="{{ sample.W1 }}" class="form-control">
+        </td>
+        <td>
+            <input type="number" step="0.01" name="W2_{{ sample.sample }}" 
+                   value="{{ sample.W2 }}" class="form-control">
+        </td>
+        <td>
+            {% if sample.mc %}{{ sample.mc }}{% endif %}
+        </td>
+    </tr>
+    {% endfor %} 
+</tbody>
+
+    </table>
+
+    <button type="submit" class="btn btn-primary">Calculate Moisture Content</button>
+</form>
+
+{% if result %}
+<div class="alert alert-success mt-4">
+    <strong>Average Moisture Content:</strong> {{ result }}
+</div>
+
+<div class="bg-light p-3 rounded">
+    {{ steps|safe }}
+</div>
+{% endif %}
+{% if result %}
+<hr class="my-4">
+<h5>Send Result to Student Email</h5>
+<form method="POST">
+    {% csrf_token %}
+
+    <!-- Preserve inputs for email sending -->
+    {% for sample in moisture_results %}
+        <input type="hidden" name="W1_{{ sample.sample }}" value="{{ sample.W1 }}">
+        <input type="hidden" name="W2_{{ sample.sample }}" value="{{ sample.W2 }}">
+    {% endfor %}
+    <input type="hidden" name="from_result" value="true">
+
+    <div class="mb-3 mt-3">
+        <label for="email" class="form-label">Student Email</label>
+        <input type="email" name="email" id="email" class="form-control"
+               placeholder="student@example.com"
+               value="{{ email|default:'' }}" required>
+    </div>
+    <button type="submit" class="btn btn-success">📧 Send Result to Email</button>
+</form>
+{% endif %}
+
+
+{% endblock %}

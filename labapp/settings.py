@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-)ten@7sc(bl=1e3%m*l8v+fxday8s3q++p*5vp$$z9(^fl51)2
 DEBUG = True
 
 import os
-ALLOWED_HOSTS = ['smarttechlabs-0vps.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,8 +119,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-# Default primary key field type
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')# Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -130,5 +130,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'karrisubhash643@gmail.com'  
-EMAIL_HOST_PASSWORD = 'gqmg mhwp ejke ixdy'
+EMAIL_HOST_PASSWORD = 'ohvm inva zhcy wxzd'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

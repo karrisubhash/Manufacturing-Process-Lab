@@ -1,0 +1,49 @@
+{% extends "experiments/base.html" %}
+{% block content %}
+<h3>{{ experiment.title }}</h3>
+
+<div class="mb-3">
+  <strong>Aim:</strong>
+  <p>{{ experiment.aim }}</p>
+</div>
+
+<div class="mb-3">
+  <strong>Apparatus:</strong>
+  <ul>
+    {% for item in experiment.apparatus %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="mb-3">
+  <strong>Procedure:</strong>
+  <ol>
+    {% for step in experiment.procedure %}
+      <li>{{ step }}</li>
+    {% endfor %}
+  </ol>
+</div>
+
+<div class="mb-3">
+  <strong>Precautions:</strong>
+  <ul>
+    {% for p in experiment.precautions %}
+      <li>{{ p }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="mb-3">
+  <strong>Reference Video:</strong>
+   <div style="max-width:100%;height:auto;">
+    <div style="text-align:center;">
+  <a href="https://youtube.com/watch?v=mBCdYt2U6cg" target="_blank" class="btn btn-danger">
+    ▶ Watch Video on YouTube
+  </a>
+</div>
+</div>
+
+<hr class="my-4">
+<a href="{% url 'experiment_list' %}" class="btn btn-secondary">← Back to Experiments</a>
+{% endblock %}
