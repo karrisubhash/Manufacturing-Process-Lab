@@ -66,9 +66,23 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-### Email configuration
+### Environment variables
 
-Results are sent through Gmail SMTP. The SMTP settings (`EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, a Gmail **app password**) are in `labapp/settings.py`. Moving them and `SECRET_KEY` into environment variables is the first item under *Future improvements*.
+All configuration comes from the environment; nothing secret is stored in the repository.
+
+| Variable | Purpose |
+|---|---|
+| `DJANGO_SECRET_KEY` | Django secret key (a random one is generated if unset, which resets sessions on restart) |
+| `DJANGO_DEBUG` | `True` for local development; defaults to `False` |
+| `DJANGO_ALLOWED_HOSTS` | Comma-separated; defaults to `localhost,127.0.0.1,mpvirtuallab.pythonanywhere.com` |
+| `EMAIL_HOST_USER` | Gmail address used to send results |
+| `EMAIL_HOST_PASSWORD` | Gmail **app password** |
+
+```bash
+export DJANGO_DEBUG=True EMAIL_HOST_USER=you@gmail.com EMAIL_HOST_PASSWORD=<app-password>
+```
+
+On PythonAnywhere, set them at the top of the WSGI file (`os.environ[...] = ...`) and reload the web app.
 
 ## Routes
 
@@ -91,7 +105,6 @@ No tests exist yet. The highest-value next step is unit tests for each calculati
 
 ## Future improvements
 
-- Read `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS` and the SMTP credentials from environment variables.
 - Move the calculation logic out of `views.py` into a pure `calculations.py` module and unit-test every formula.
 - Add a PDF lab-record download.
 - Add a teacher dashboard for submitted readings.
