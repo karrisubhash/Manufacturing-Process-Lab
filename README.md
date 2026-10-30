@@ -91,9 +91,6 @@ On PythonAnywhere, set them at the top of the WSGI file (`os.environ[...] = ...`
 | `/` | Experiment list |
 | `/<slug>/` | Run an experiment, e.g. `sieve-analysis`, `moisture-content`, `clay-content`, `green-compression` |
 
-## Screenshots
-
-<!-- TODO(Subhash): add the experiment list, a result page with its graph, and the email -->
 
 ## Testing
 
