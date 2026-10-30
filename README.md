@@ -6,6 +6,9 @@
 [![Django](https://img.shields.io/badge/Django-5.0-092E20?logo=django&logoColor=white)](#)
 [![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white)](#)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C)](#)
+[![Live](https://img.shields.io/badge/Live-PythonAnywhere-1D9FD7?logo=python&logoColor=white)](https://mpvirtuallab.pythonanywhere.com/)
+
+**🔗 Live:** https://mpvirtuallab.pythonanywhere.com/ (independently deployed on PythonAnywhere)
 
 ---
 
